@@ -13,6 +13,7 @@
 	- [CSV Upload](#csv-upload)
   - [server.R](#serverr)
   - [model.R](#modelr)
+- [Debugging](#debugging)
   
 ## Server Setup 
 
