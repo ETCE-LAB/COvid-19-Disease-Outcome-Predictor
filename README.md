@@ -6,13 +6,13 @@
 - [Application Setup](#application-setup)
   - [Import/Update the Shiny Application](#importupdate-the-shiny-application)
 - [Documentation](#documentation)
-  - [ui.R](#ui.R)
+  - [ui.R](#ui.r)
   - [www/ui.js](#wwwui.js)
 	- [Table Editing](#table-editing)
 	- [Shiny Server Communication](#shiny-server-communication)
 	- [CSV Upload](#csv-upload)
-  - [server.R](#server.R)
-  - [model.R](#model.R)
+  - [server.R](#server.r)
+  - [model.R](#model.r)
   
 ## Server Setup 
 
@@ -167,9 +167,9 @@ the browser user interface.
 The following javascript libraries are included into the user interface via
 cdns:
 
-	- [Tabulator](https://github.com/olifolkerd/tabulator): Editing and displaying patient data and predictions respectively.
-	- [json2csv](https://github.com/zeMirco/json2csv): json to csv conversion.
-	- [jquery-csv](https://github.com/evanplaice/jquery-csv): csv to json conversion
+1. [Tabulator](https://github.com/olifolkerd/tabulator): Editing and displaying patient data and predictions respectively.
+2. [json2csv](https://github.com/zeMirco/json2csv): json to csv conversion.
+3. [jquery-csv](https://github.com/evanplaice/jquery-csv): csv to json conversion
 	
 #### Table Editing
 
