@@ -6,13 +6,13 @@
 - [Application Setup](#application-setup)
   - [Import/Update the Shiny Application](#importupdate-the-shiny-application)
 - [Documentation](#documentation)
-  - [ui.R](#ui.r)
-  - [www/ui.js](#wwwui.js)
+  - [ui.R](#uir)
+  - [www/ui.js](#wwwuijs)
 	- [Table Editing](#table-editing)
 	- [Shiny Server Communication](#shiny-server-communication)
 	- [CSV Upload](#csv-upload)
-  - [server.R](#server.r)
-  - [model.R](#model.r)
+  - [server.R](#serverr)
+  - [model.R](#modelr)
   
 ## Server Setup 
 
