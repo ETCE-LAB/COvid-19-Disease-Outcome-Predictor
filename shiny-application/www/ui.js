@@ -240,26 +240,20 @@ $(document).on('shiny:unbound', (event) => {
     console.log(event.name);
 });
 
-// Event listener render the uploaded csv file using tabulator
-// CSV file is converted to json using the jquery-csv library
-document.getElementById("load-csv-Unt").addEventListener("click", function(event){
-    csvFile = document.getElementById("upload-csv-Unt");
-    var reader = new FileReader();
+// Shiny for some reason kills <input type=file> tags, that are not
+// created using fileInput shiny modules, so Shiny events need to be
+// unbound and then rebound for the app to work after the file has
+// been added to the DOM
 
-    if(csvFile.files && csvFile.files[0]){
-	reader.onload = (e) => {
-	    csvRAW = e.target.result;
-	    tabledataUnt = $.csv.toObjects(csvRAW);
-	    patientDataTable_Unt.setData(tabledataUnt);
-	};
-	reader.readAsText(csvFile.files[0]);
-    }
-    else{
-	console.log("File not selected yet?");
-    }
+$("#upload-csv-Ovt").click(function(){
+    Shiny.unbindAll();
 });
 
-document.getElementById("load-csv-Ovt").addEventListener("click", function(event){
+// Event listener to render the uploaded csv file using tabulator CSV
+// file is converted to json using the jquery-csv library
+
+$("#upload-csv-Ovt").change(function(){
+    Shiny.bindAll();
     csvFile = document.getElementById("upload-csv-Ovt");
     var reader = new FileReader();
 
@@ -274,19 +268,6 @@ document.getElementById("load-csv-Ovt").addEventListener("click", function(event
     else{
 	console.log("File not selected yet?");
     }
-
-});
-
-// Shiny for some reason kills <input type=file> tags, that are not created using fileInput shiny modules, so Shiny events need to be unbound and then rebound for the app to work after the file has been added to the DOM
-
-// 
-
-$("#upload-csv-Ovt").click(function(){
-    Shiny.unbindAll();
-});
-
-$("#upload-csv-Ovt").change(function(){
-    Shiny.bindAll();
     renderOvtPredictions();
 });
 
@@ -294,8 +275,23 @@ $("#upload-csv-Unt").click(function(){
     Shiny.unbindAll();
 });
 
+// Event listener to render the uploaded csv file using tabulator CSV
+// file is converted to json using the jquery-csv library
 $("#upload-csv-Unt").change(function(){
     Shiny.bindAll();
+    csvFile = document.getElementById("upload-csv-Unt");
+    var reader = new FileReader();
+
+    if(csvFile.files && csvFile.files[0]){
+	reader.onload = (e) => {
+	    csvRAW = e.target.result;
+	    tabledataUnt = $.csv.toObjects(csvRAW);
+	    patientDataTable_Unt.setData(tabledataUnt);
+	};
+	reader.readAsText(csvFile.files[0]);
+    }
+    else{
+	console.log("File not selected yet?");
+    }
     renderUntPredictions();
 });
-
