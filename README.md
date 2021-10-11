@@ -221,3 +221,12 @@ The `server.R` file implements the shiny-server functionality.
 
 The `model.R` file implements the COvid-19 Disease outcome prediction
 model.
+
+## Debugging
+
+Since Shiny debugging is sometimes non-trivial, the `ui.js` file has
+an event listener for manually debugging Shiny code. Shiny can send
+arbitrary data to the browser session (see [Shiny
+Documentation](https://shiny.rstudio.com/articles/communicating-with-js.html)),
+sending a message with the `debug` identifier will print the message
+to the browser console.
