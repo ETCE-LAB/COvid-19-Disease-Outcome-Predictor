@@ -29,112 +29,43 @@ var tabledataOvt = [
      "Glucose (mg/dL)":"",
      "D-dimer (ng/mL)":""}
 ];
-
-var tabledataUnt = [
-    {"Age":"",
-     "Platelets (x10^6/L)":"",
-     "Eosinophils (x10^6/L)":"",
-     "Neutrophils  (x10^6/L)":"",
-     "Monocytes  (x10^6/L)":"",
-     "C-Reactive Protein (mg/L)":"",
-     "Creatinine (mg/dL)":"",
-     "Lactate Dehydrogenase (U/L)":"",
-     "Sodium (Natremia; mmol/L)":"",
-     "Potassium (Kalemia; mmol/L)":"",
-     "Glucose (mg/dL)":"",
-     "D-dimer (ng/mL)":""}
-];
-
 // Initialise Editable table
 var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
+    validationMode:"highlight",
     data:tabledataOvt,
     reactiveData:true,
     columns:[
-	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Platelets (x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Eosinophils (x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Neutrophils  (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Monocytes  (x10^6/L)", field:"Monocytes  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"C-Reactive Protein (mg/L)", field:"C-Reactive Protein (mg/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Creatinine (mg/dL)", field:"Creatinine (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Lactate Dehydrogenase (U/L)", field:"Lactate Dehydrogenase (U/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Sodium (Natremia; mmol/L)", field:"Sodium (Natremia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Potassium (Kalemia; mmol/L)", field:"Potassium (Kalemia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Glucose (mg/dL)", field:"Glucose (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"D-dimer (ng/mL)", field:"D-dimer (ng/mL)", sorter:"number", editor:true, mutator:"Numeric"}
+	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric", validator:{
+	    type:"min",
+	    parameters:0
+	}},
+	{title:"Platelets<br/>(x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Eosinophils<br/>(x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Neutrophils<br/> (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Monocytes<br/> (x10^6/L)", field:"Monocytes  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"C-Reactive Protein<br/>(mg/L)", field:"C-Reactive Protein (mg/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Creatinine<br/>(mg/dL)", field:"Creatinine (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Lactate Dehydrogenase<br/>(U/L)", field:"Lactate Dehydrogenase (U/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Sodium<br/>(Natremia; mmol/L)", field:"Sodium (Natremia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Potassium<br/>(Kalemia; mmol/L)", field:"Potassium (Kalemia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"Glucose<br/>(mg/dL)", field:"Glucose (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"},
+	{title:"D-dimer<br/>(ng/mL)", field:"D-dimer (ng/mL)", sorter:"number", editor:true, mutator:"Numeric"}
     ],
     autoColumns:false,
     history:true,
-    layout:"fitColumns",
+    layout:"fitDataTable",
     layoutColumnsOnNewData:true,
     tooltips:true,
-    // responsiveLayout:"hide",
+    //responsiveLayout:"collapse",
     resizableRows:true,
     resizableColumns:true});
-
-var patientDataTable_Unt = new Tabulator("#patientData-table-Unt", {
-    data:tabledataUnt,
-    reactiveData:true,
-    columns:[
-	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Platelets (x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Eosinophils (x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Neutrophils  (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Monocytes  (x10^6/L)", field:"Monocytes  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"C-Reactive Protein (mg/L)", field:"C-Reactive Protein (mg/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Creatinine (mg/dL)", field:"Creatinine (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Lactate Dehydrogenase (U/L)", field:"Lactate Dehydrogenase (U/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Sodium (Natremia; mmol/L)", field:"Sodium (Natremia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"},
-	{title:"Potassium (Kalemia; mmol/L)", field:"Potassium (Kalemia; mmol/L)", sorter:"number", editor:true, mutator:"Numeric"}, {title:"Glucose (mg/dL)", field:"Glucose (mg/dL)", sorter:"number", editor:true, mutator:"Numeric"}, {title:"D-dimer (ng/mL)", field:"D-dimer (ng/mL)", sorter:"number", editor:true, mutator:"Numeric"}
-    ],
-    autoColumns:false,
-    history:true,
-    layout:"fitColumns",
-    layoutColumnsOnNewData:true,
-    tooltips:true,
-    // responsiveLayout:"hide",
-    resizableRows:true,
-    resizableColumns:true});
-
 // Event listeners for Add/Undo/Redo/Delete actions
-
-document.getElementById("add-patient-Unt").addEventListener("click", function(){
-    tabledataUnt.push({});
-});
-
-document.getElementById("undo-edit-Unt").addEventListener("click", function(){
-    patientDataTable_Unt.undo();
-});
-
-document.getElementById("redo-edit-Unt").addEventListener("click", function(){
-    patientDataTable_Unt.redo();
-});
-
-document.getElementById("del-row-Unt").addEventListener("click", function(){
-    tabledataUnt.pop(); 
-});
-
 // Function that sets the patientDataCSV_* attribute on the shiny-server session to compute the predictions
 // The json data from the table is converted to csv and the Shiny input is set.
-var get_predictions_Unt = () => {
-    Shiny.setInputValue("patientDataCSV_Unt", json2csv.parse(patientDataTable_Unt.getData(), {delimiter:"|"}));
-};
-
-// Event Listener for the 'Predict' action
-document.getElementById("compute-predictions-Unt").addEventListener("click", get_predictions_Unt);
-
 // Event listeners for Add/Undo/Redo/Delete actions
+
 document.getElementById("add-patient-Ovt").addEventListener("click", function(){
     tabledataOvt.push({});
-});
-
-document.getElementById("undo-edit-Ovt").addEventListener("click", function(){
-    patientDataTable_Ovt.undo();
-});
-
-document.getElementById("redo-edit-Ovt").addEventListener("click", function(){
-    patientDataTable_Ovt.redo();
-
 });
 
 document.getElementById("del-row-Ovt").addEventListener("click", function(){
@@ -162,36 +93,17 @@ Shiny.addCustomMessageHandler('debug', function(message) {
 });
 
 var tableOvt_Output = undefined;
-var tableUnt_Output = undefined;
-
-// Functions that render the rediction tables returned by shiny using
-// the tabulator library
-function renderUntPredictions(){
-	divv = document.getElementById("tableUnt");
-	divv.children[0].id="tableUnt-output";
-	tableOvt_Output = new Tabulator("#tableUnt-output", {
-	    reactiveData:true,
-	    autoColumns:false,
-	    layout:"fitColumns",
-	    layoutColumnsOnNewData:true,
-	    tooltips:true,
-	    // responsiveLayout:"hide",
-	    resizableRows:true,
-	    resizableColumns:true});
-}
-
 function renderOvtPredictions(){
 	divv = document.getElementById("tableOvt");
 	divv.children[0].id="tableOvt-output";
 	tableOvt_Output = new Tabulator("#tableOvt-output", {
-	    reactiveData:true,
 	    autoColumns:false,
-	    layout:"fitColumns",
-	    layoutColumnsOnNewData:true,
-	    tooltips:true,
-	    // responsiveLayout:"hide",
-	    resizableRows:true,
-	    resizableColumns:true});
+    layout:"fitDataTable",
+    layoutColumnsOnNewData:true,
+    tooltips:true,
+    //responsiveLayout:"collapse",
+    resizableRows:true,
+    resizableColumns:true});
 }
 
 // Event listener when the Shiny app updates a value. Used for
@@ -204,33 +116,45 @@ $(document).on("shiny:value", function(event){
 	renderOvtPredictions();
 	event.preventDefault();
     }
-    else if(event.name==="tableUnt"){
-    console.log("Recieved Predictions Unt");
-	$("#tableUnt").html(event.value);
-	divv = document.getElementById("tableUnt");
-	divv.children[0].id="tableUnt-output";
-	tableUnt_Output = new Tabulator("#tableUnt-output", {
-	    reactiveData:true,
-	    autoColumns:false,
-	    layout:"fitColumns",
-	    layoutColumnsOnNewData:true,
-	    tooltips:true,
-	    // responsiveLayout:"hide",
-	    resizableRows:true,
-	    resizableColumns:true});
-	event.preventDefault();
-    }
+
 });
 
 // Event listeners for downloading the predictions to csv
-document.getElementById("download-predictions-Ovt").addEventListener("click", function(event){
-    tableOvt_Output.download("csv", "Ovt-Predictions.csv", {delimiter:","});
-});
 
-document.getElementById("download-predictions-Unt").addEventListener("click", function(event){
-    tableUnt_Output.download("csv", "Unt-Predictions.csv", {delimiter:","});
+function downloadPredictions(choice){
+    if(choice=="csv") {
+	tableOvt_Output.download("csv", "Predictions.csv", {delimiter:","});
+    }
+    else if(choice=="xlsx"){
+	tableOvt_Output.download("xlsx", "Predictions.xlsx", {sheetName:"Predictions"}); //download a xlsx file that has a sheet name of "MyData"
+    }
+    else if(choice=="pdf"){
+	jsPDF = jspdf.jsPDF;
+	tableOvt_Output.download("pdf", "Predictions.pdf", {
+	    orientation:"landscape", //set page orientation to portrait
+	    title:"Predictions", //add title to report
+    // jsPDF:{
+    //     unit:"in", //set units to inches
+    // },
+    // autoTable:{ //advanced table styling
+    //     styles: {
+    //         fillColor: [100, 255, 255]
+    //     },
+    //     columnStyles: {
+    //         id: {fillColor: 255}
+    //     },
+    //     margin: {top: 60},
+    // },
+    // documentProcessing:function(doc){
+    //     //carry out an action on the doc object
+    // }
 });
+    }
+}
 
+document.getElementById("download-button").addEventListener("click", function(event){
+    downloadPredictions($("#download-predictions-choice").val());
+});
 // Debug functions
 $(document).on('shiny:bound', (event) => {
     console.log(event.name);
@@ -238,60 +162,4 @@ $(document).on('shiny:bound', (event) => {
 
 $(document).on('shiny:unbound', (event) => {
     console.log(event.name);
-});
-
-// Shiny for some reason kills <input type=file> tags, that are not
-// created using fileInput shiny modules, so Shiny events need to be
-// unbound and then rebound for the app to work after the file has
-// been added to the DOM
-
-$("#upload-csv-Ovt").click(function(){
-    Shiny.unbindAll();
-});
-
-// Event listener to render the uploaded csv file using tabulator CSV
-// file is converted to json using the jquery-csv library
-
-$("#upload-csv-Ovt").change(function(){
-    Shiny.bindAll();
-    csvFile = document.getElementById("upload-csv-Ovt");
-    var reader = new FileReader();
-
-    if(csvFile.files && csvFile.files[0]){
-	reader.onload = (e) => {
-	    csvRAW = e.target.result;
-	    tabledataOvt = $.csv.toObjects(csvRAW);
-	    patientDataTable_Ovt.setData(tabledataOvt);
-	};
-	reader.readAsText(csvFile.files[0]);
-    }
-    else{
-	console.log("File not selected yet?");
-    }
-    renderOvtPredictions();
-});
-
-$("#upload-csv-Unt").click(function(){
-    Shiny.unbindAll();
-});
-
-// Event listener to render the uploaded csv file using tabulator CSV
-// file is converted to json using the jquery-csv library
-$("#upload-csv-Unt").change(function(){
-    Shiny.bindAll();
-    csvFile = document.getElementById("upload-csv-Unt");
-    var reader = new FileReader();
-
-    if(csvFile.files && csvFile.files[0]){
-	reader.onload = (e) => {
-	    csvRAW = e.target.result;
-	    tabledataUnt = $.csv.toObjects(csvRAW);
-	    patientDataTable_Unt.setData(tabledataUnt);
-	};
-	reader.readAsText(csvFile.files[0]);
-    }
-    else{
-	console.log("File not selected yet?");
-    }
-    renderUntPredictions();
 });

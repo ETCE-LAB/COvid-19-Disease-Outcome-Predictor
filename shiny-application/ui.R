@@ -26,24 +26,56 @@ ui <- function(req) {
   div(
     id = "tabs",
     HTML("<p><b style='font-size: 16px; color:red'>2.</b> Select between CODOP-Unt and CODOP-Ovt (see explanation of the characteristics of these two predictor subtypes above).</p>"),
-    HTML(" <p><b style='font-size: 16px; color:red'>3.</b> (You may skip this step if you do not have a .csv file with patient data). Download the following 'example table of patient data' (Note: the table is in .csv format, which can be opened with Excel):
+    ## HTML(" <p><b style='font-size: 16px; color:red'>3.</b> (You may skip this step if you do not have a .csv file with patient data). Download the following 'example table of patient data' (Note: the table is in .csv format, which can be opened with Excel):
+    ## "),
+    ## downloadLink("sampleFile", "Download the Example Table of patient data"),
+    ## HTML(" </p>
+##       <ul>
+##         <li>Open the table and substitute the example values of the 12 features for the patient’s values you would like to add. Feel free to delete or add more rows depending on the number of patients that you would like CODOP to make the prediction on.</li>
+##         <li><b>Important:</b> if the values of some features are missing for some patients, leave the corresponding cells empty or used a zero value.</li>
+##         <li>Save the final table in .csv format in your computer.</li>
+## <li>Upload the .csv file by clicking on 'Browse...' below, and the data should appear in an editable table.</li>
+##       </ul>
+##     "),
+    HTML(" <p><b style='font-size: 16px; color:red'>3.</b> You may add new and edit existing patient data using the table below. Clicking on a cell allows you to edit the values. The 'Add Row' and 'Delete Last Row' buttons append an empty row and delete the last row, to and from the table respectively. </p>
     "),
-    downloadLink("sampleFile", "Download the Example Table of patient data"),
-    HTML(" </p>
-      <ul>
-        <li>Open the table and substitute the example values of the 12 features for the patient’s values you would like to add. Feel free to delete or add more rows depending on the number of patients that you would like CODOP to make the prediction on.</li>
-        <li><b>Important:</b> if the values of some features are missing for some patients, leave the corresponding cells empty or used a zero value.</li>
-        <li>Save the final table in .csv format in your computer.</li>
-<li>Upload the .csv file by clicking on 'Browse...' below, and the data should appear in an editable table.</li>
-      </ul>
+    HTML("
+      <p><b style='font-size: 16px; color:red'>4.</b> Click on 'PREDICT' to submit the patient data.</p>
     "),
-HTML("
-      <p><b style='font-size: 16px; color:red'>4.</b> You may add new and edit existing patient data using the 'Add', 'Undo', 'Redo', 'Delete' buttons below. The 'Add' and 'Delete' buttons append an empty row and delete the last row, in the table respectively. </p>
-    "),
-HTML("
-      <p><b style='font-size: 16px; color:red'>5.</b> Click on 'Predict' to submit the patient data.</p>
-    "),
-tabsetPanel(type = "tabs",
+    radioButtons("triageRadio", inline=TRUE,NULL,
+                 choices = list("CODOP-Ovt" = 1, "CODOP-Unt" = 2), selected = 1),
+    tags$div(id="patientData-Ovt",
+                                        # Add the control buttons
+             tags$div(
+                      actionButton("add-patient-Ovt", "Add Row"),
+                      actionButton("del-row-Ovt", "Delete Last Row"),
+                      actionButton("compute-predictions-Ovt",
+                                   "PREDICT",
+                                   style = "background-color:#F03535;color:#FFFFFF;")),
+             br(), tags$div(id="patientData-table-Ovt"),
+             br()),
+    HTML("<b style='font-size: 16px; color:red'>5.</b>"),
+    span("If your patient table has missing values, click the following box:"),
+
+    checkboxInput("imputation", "Activate Imputation",FALSE),
+
+
+    HTML("<b style='font-size: 16px; color:red'>6. </b>"),
+    span("If all previous steps are performed correctly, you should see below a table that is similar to the one that you upload but with two extra columns with the predicted outcome. You can download this new table by pressing the “Download Predictions” tag. Thus, this table will be saved in the format selected in the dropdown menu."),
+    hr(),
+    tags$div(id="download-predictions-Ovt",
+             actionButton("download-button", "Download Predictions"),
+             selectInput("download-predictions-choice", NULL, 
+                         choices = list("CSV" = "csv", "XLSX" = "xlsx",
+                                        "PDF" = "pdf"), selected = 1)),
+
+
+    ## actionButton("download-predictions-Ovt", "Download Predictions"),
+    ## hr(),
+                                        #HTML("<p>Prediction: 1=High probability of death  0=High probability of survival</p>"),
+
+                                        # Table for the outputs to be displayed
+    tableOutput("tableOvt"),
 
 
 
@@ -76,108 +108,23 @@ tabsetPanel(type = "tabs",
                                         # ),
 
                                         # File Upload Tab ( default version)
-            tabPanel("CODOP-Ovt",
-                     br(),
-
-                     ## fileInput("patientFile", "", #"Upload a CSV file with patient data",
-                     ##          multiple = FALSE,
-                     ##          accept = c("text/csv",
-                     ##                     "text/comma-separated-values,text/plain",
-                     ##                     ".csv")),
-                                        #downloadLink("sampleFile", "Download the Example Table of patient data"),
-                                        # Add the div for the editable table and controls
-                     tags$div(id="patientData-Ovt",
-                                        # Add the control buttons
-                              tags$div(
-                                       actionButton("add-patient-Ovt", "Add"),
-                                       actionButton("undo-edit-Ovt", "Undo"),
-                                       actionButton("redo-edit-Ovt", "Redo"),
-                                       actionButton("del-row-Ovt", "Delete"),
-                                       actionButton("compute-predictions-Ovt", "Predict")),
-                              br(), tags$div(id="patientData-table-Ovt"),
-                              br(),
-                                        # File input for loading csv to the table
-                              tags$input(type="file", placeholder="No patient data file uploaded",  id="upload-csv-Ovt", accept="text/csv")),
-                     br(),
-                     
-                                        # Checkbox for imputation
-                     HTML("<b style='font-size: 16px; color:red'>6.</b>"),
-                     span("If your patient table has missing values, click the following box:"),
-
-                     checkboxInput("imputation", "Activate Imputation",FALSE),
-
-
-                     HTML("<b style='font-size: 16px; color:red'>7. </b>"),
-                     span("If all previous steps are performed correctly, you should see below a table that is similar to the one that you upload but with two extra columns with the predicted outcome.
-                        You can download this new table by pressing the “Download Predictions” tag. Thus, this table will be saved in .csv format in your computer.
-                  "),
-                  hr(),
-                  actionButton("download-predictions-Ovt", "Download Predictions"),
-                  hr(),
-                                        #HTML("<p>Prediction: 1=High probability of death  0=High probability of survival</p>"),
-
-                                        # Table for the outputs to be displayed
-                  tableOutput("tableOvt"),
-                  ),
 
                                         # File Upload Tab ( second version)
-            tabPanel("CODOP-Unt",
-                     br(),
-                                        # Add the div for the editable table and controls
-                     tags$div(id="patientData-Unt",
-                              tags$div(
-                                        # Add the controls
-                                       actionButton("add-patient-Unt", "Add"),
-                                       actionButton("undo-edit-Unt", "Undo"),
-                                       actionButton("redo-edit-Unt", "Redo"),
-                                       actionButton("del-row-Unt", "Delete"),
-                                       actionButton("compute-predictions-Unt", "Predict")),
-                              br(),
-                                        # File input for loading csv to the table
-                              tags$div(id="patientData-table-Unt"),
-                              br(),
-                              tags$input(type="file",
-                                         placeholder="No patient data file uploaded",
-                                         id="upload-csv-Unt",
-                                         accept="text/csv")),
-                     
-                     ## fileInput("patientFileUnt", "", #"Upload a CSV file with patient data",
-                     ##            multiple = FALSE,
-                     ##            accept = c("text/csv",
-                     ##                       "text/comma-separated-values,text/plain",
-                     ##                       ".csv")),
-                                        #downloadLink("sampleFileUnt", "Download sample file"),
-                     br(),
+    
+    ),
 
-                                        # Checkbox for imputation
-                     HTML("<b style='font-size: 16px; color:red'>4.</b>"),
-                     span("If your patient table has missing values, click the following box:"),
-
-                     checkboxInput("imputationUnt", "Activate Imputation",FALSE),
-
-                     HTML("<b style='font-size: 16px; color:red'>5. </b>"),
-                     span("If all previous steps are performed correctly, you should see below a table that is similar to the one that you upload but with two extra columns with the predicted outcome.
-                               You can download this new table by pressing the “Download Predictions” tag. Thus, this table will be saved in .csv format in your computer.
-                         "),
-                     hr(),
-                     actionButton("download-predictions-Unt", "Download Predictions"),
-                     hr(),
-                                        #HTML("<p>Prediction: 1=High probability of death  0=High probability of survival</p>"),
-                                        # Table for the outputs to be displayed
-                     tableOutput("tableUnt"),
-                     )
-            )
-),
-
-tags$script(src="ui.js"),
-tags$script(src="https://cdn.jsdelivr.net/npm/jquery-csv@1.0.21/src/jquery.csv.min.js"),
+  tags$script(src="ui.js"),
+  tags$script(src="https://cdn.jsdelivr.net/npm/jquery-csv@1.0.21/src/jquery.csv.min.js"),
+  tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"),
+  tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"),
+  tags$script(src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"),
                                         # Invisible Textfield that contains the IP address (is used later on to store the clients IP)
-div(style = "display: none;",
-    textInput("remote_addr", "remote_addr",
-              if (!is.null(req[["HTTP_X_FORWARDED_FOR"]]))
-                  req[["HTTP_X_FORWARDED_FOR"]]
-              else
-                  req[["REMOTE_ADDR"]]
-              )
-    )
-)}
+  div(style = "display: none;",
+      textInput("remote_addr", "remote_addr",
+                if (!is.null(req[["HTTP_X_FORWARDED_FOR"]]))
+                    req[["HTTP_X_FORWARDED_FOR"]]
+                else
+                    req[["REMOTE_ADDR"]]
+                )
+      )
+  )}

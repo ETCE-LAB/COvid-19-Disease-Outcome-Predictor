@@ -81,8 +81,18 @@ shinyServer(function(input, output, session) {
 
        req(input$patientDataCSV_Ovt)
 
+       threshold<- NULL
+       if (input$triageRadio == 1){
+           threshold<-thresholdOvt
+       }
+       else if (input$triageRadio == 2){
+           threshold<-thresholdUnt
+       }
+       else{
+           showNotification("Could not choose correct model (CODOP-Ovt/CODOP-Unt)", type="error")
+       }
        # Get predictions
-     df <- readRawCSVAndAddRisks(input$patientDataCSV_Ovt, input$imputation, thresholdOvt)
+     df <- readRawCSVAndAddRisks(input$patientDataCSV_Ovt, input$imputation, threshold)
        shinyjs::show("download-predictions-Ovt")
 
       # Check for missing values
@@ -96,29 +106,29 @@ shinyServer(function(input, output, session) {
    },
   digits = 8)
   
-  output$tableUnt <- renderTable({
-  #Check if terms are accepted
-   shinyjs::hide("download-predictions-Unt")
-   if(input$terms) {
+  ## output$tableUnt <- renderTable({
+  ## #Check if terms are accepted
+  ##  shinyjs::hide("download-predictions-Unt")
+  ##  if(input$terms) {
     
-     # Check if a file was uploaded
+  ##    # Check if a file was uploaded
        
-     # Check if patientDataCSV_Unt is set (Currently does not work as intended. Some debugging required)
+  ##    # Check if patientDataCSV_Unt is set (Currently does not work as intended. Some debugging required)
 
-     req(input$patientDataCSV_Unt)
+  ##    req(input$patientDataCSV_Unt)
 
-     df <- readRawCSVAndAddRisks(input$patientDataCSV_Unt, input$imputationUnt, thresholdUnt)
-       shinyjs::show("download-predictions-Unt")
+  ##    df <- readRawCSVAndAddRisks(input$patientDataCSV_Unt, input$imputationUnt, thresholdUnt)
+  ##      shinyjs::show("download-predictions-Unt")
 
-      # Check for missing values
-     if(NA %in% unlist(df["Prediction"], use.names=FALSE)){
-       showNotification("Could not calculate score Please check if all required columns exist and are spelled correctly", type="error")
-     }
-     saveUserData(ip, nrow(df))
-     return(df)
-     }
-   },
-  digits = 8)
+  ##     # Check for missing values
+  ##    if(NA %in% unlist(df["Prediction"], use.names=FALSE)){
+  ##      showNotification("Could not calculate score Please check if all required columns exist and are spelled correctly", type="error")
+  ##    }
+  ##    saveUserData(ip, nrow(df))
+  ##    return(df)
+  ##    }
+  ##  },
+  ## digits = 8)
   
   # ****
   # Reactive function for the result download button 
