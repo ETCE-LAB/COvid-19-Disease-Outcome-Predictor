@@ -55,7 +55,7 @@ ui <- function(req) {
              br(), tags$div(id="patientData-table-Ovt"),
              br()),
     HTML("<b style='font-size: 16px; color:red'>5.</b>"),
-    span("If your patient table has missing values, click the following box:"),
+    span("If your patient table has missing values (including zeros), click the following box:"),
 
     checkboxInput("imputation", "Activate Imputation",FALSE),
 
