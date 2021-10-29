@@ -5,6 +5,7 @@ library(shiny)
 ui <- function(req) {
   fluidPage(
   tags$link(rel="stylesheet", type="text/css", href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css"),
+  tags$link(rel="stylesheet", type="text/css", href="ui.css"),
   tags$script(src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"),
   tags$script(src="https://cdn.jsdelivr.net/npm/json2csv@4.2.1"),
   shinyjs::useShinyjs(),
@@ -51,7 +52,11 @@ ui <- function(req) {
                       actionButton("del-row-Ovt", "Delete Last Row"),
                       actionButton("compute-predictions-Ovt",
                                    "PREDICT",
-                                   style = "background-color:#F03535;color:#FFFFFF;")),
+                                   style = "background-color:#F03535;color:#FFFFFF;font-weight:bold;")),
+             br(),
+             tags$div(id="errorPane",
+
+                      ),
              br(), tags$div(id="patientData-table-Ovt"),
              br()),
     HTML("<b style='font-size: 16px; color:red'>5.</b>"),
@@ -68,13 +73,14 @@ ui <- function(req) {
              selectInput("download-predictions-choice", NULL, 
                          choices = list("CSV" = "csv", "XLSX" = "xlsx",
                                         "PDF" = "pdf"), selected = 1)),
-
+    
 
     ## actionButton("download-predictions-Ovt", "Download Predictions"),
     ## hr(),
                                         #HTML("<p>Prediction: 1=High probability of death  0=High probability of survival</p>"),
 
                                         # Table for the outputs to be displayed
+    tags$div(id="tableOvt-output"),
     tableOutput("tableOvt"),
 
 
@@ -114,6 +120,7 @@ ui <- function(req) {
     ),
 
   tags$script(src="ui.js"),
+  tags$script(src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.3/jquery.scrollTo.min.js"),
   tags$script(src="https://cdn.jsdelivr.net/npm/jquery-csv@1.0.21/src/jquery.csv.min.js"),
   tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"),
   tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"),

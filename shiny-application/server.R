@@ -52,6 +52,7 @@ shinyServer(function(input, output, session) {
   
   # Hide tabs and download button in the beginning
   shinyjs::hide("tabs")
+  #shinyjs::hide("tableOvt")
   
   # ****
   # Reactive function to check if terms are accepted 
@@ -71,6 +72,7 @@ shinyServer(function(input, output, session) {
   # ****
   # Reactive function that displays the table and shows the download button
   # ****
+  
   output$tableOvt <- renderTable({
   #Check if terms are accepted
    shinyjs::hide("download-predictions-Ovt")
@@ -91,19 +93,19 @@ shinyServer(function(input, output, session) {
        else{
            showNotification("Could not choose correct model (CODOP-Ovt/CODOP-Unt)", type="error")
        }
-       # Get predictions
-     df <- readRawCSVAndAddRisks(input$patientDataCSV_Ovt, input$imputation, threshold)
+                                        # Get predictions
+       df <- readRawCSVAndAddRisks(input$patientDataCSV_Ovt, input$imputation, threshold)
        shinyjs::show("download-predictions-Ovt")
-
-      # Check for missing values
-     if(NA %in% unlist(df["Prediction"], use.names=FALSE)){
-       showNotification("Could not calculate score Please check if all required columns exist and are spelled correctly", type="error")
+       
+                                        # Check for missing values
+       if(NA %in% unlist(df["Prediction"], use.names=FALSE)){
+         showNotification("Could not calculate score Please check if all required columns exist and are spelled correctly", type="error")
      }
-     saveUserData(ip, nrow(df))
-
-     return(df)
-     }
-   },
+       saveUserData(ip, nrow(df))
+       session$sendCustomMessage("CODOP-Predictions", df)
+       return(df)
+   }
+  },
   digits = 8)
   
   ## output$tableUnt <- renderTable({

@@ -1,0 +1,17 @@
+.validation-error {
+    border-style:solid;
+    border-color:red;
+    border-width:1px;
+    font-weight:bold;
+    padding:3px;
+}
+
+.validation-error:hover {
+    border-style:solid;
+    border-color:red;
+    border-width:1px;
+    font-weight:bold;
+    color:white;
+    padding:3px;
+    background:red;
+}
