@@ -46,7 +46,6 @@ imputationValues <- c(
   "Glucose (mg/dL)" = 124.285195339273,
   "D-dimer (ng/mL)" = 2122.15796236425
   )
- 
 
 # ****
 # Function for linear prediction model 
@@ -63,7 +62,8 @@ predict <- function(subject, activateImputation = FALSE) {
     # Cast subject value to numeric
     subjectValue <- convertToNumeric(subject[name])
     # Numeric values: just compute
-    if ( (! subjectValue == 0) && (! is.na(subjectValue)) && is.numeric(subjectValue) ) {
+    if ( ## (! subjectValue == 0) &&
+         (! is.na(subjectValue)) && is.numeric(subjectValue) ) {
       propability <- propability + coefficients[name] * subjectValue
     # Non-Numeric value with imputation 
     } else if (activateImputation) {
