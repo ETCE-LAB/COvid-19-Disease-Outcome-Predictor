@@ -222,7 +222,7 @@ function renderOvtPredictions(predictions){
 
 // Event listener when the Shiny app updates a value. Used for
 // detecting when the predictions are ready, so they can be rendered
-// using the above functions.
+// using the above functions. -- Deprecated.
 $(document).on("shiny:value", function(event){
     if(event.name==='tableOvt'){
 	console.log("Recieved Predictions");

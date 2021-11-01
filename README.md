@@ -9,8 +9,8 @@
   - [ui.R](#uir)
   - [www/ui.js](#wwwuijs)
 	- [Table Editing](#table-editing)
+	- [Error Messages](#error-messages)
 	- [Shiny Server Communication](#shiny-server-communication)
-	- [CSV Upload](#csv-upload)
   - [server.R](#serverr)
   - [model.R](#modelr)
 - [Debugging](#debugging)
@@ -168,9 +168,18 @@ the browser user interface.
 The following javascript libraries are included into the user interface via
 cdns:
 
-1. [Tabulator](https://github.com/olifolkerd/tabulator): Editing and displaying patient data and predictions respectively.
+1. [Tabulator](https://github.com/olifolkerd/tabulator): Editing and
+   displaying patient data and predictions respectively.
 2. [json2csv](https://github.com/zeMirco/json2csv): json to csv conversion.
 3. [jquery-csv](https://github.com/evanplaice/jquery-csv): csv to json conversion
+4. [jquery.scrollTo](https://github.com/flesler/jquery.scrollTo):
+   programmatic scrolling
+5. [jspdf](https://github.com/parallax/jsPDF): pdf generation
+   compatibility extension for Tabulator
+6. [jspdf-autotable](https://github.com/simonbengtsson/jsPDF-AutoTable):
+   Table extension for jspdf
+7. [sheetjs](https://github.com/SheetJS/sheetjs): xlsx generation
+   compatibility extension for Tabulator
 	
 #### Table Editing
 
@@ -180,39 +189,34 @@ default columns for patient data. Tabulator's Undo/Redo and Add/Delete
 functionality is also implemented by adding event listeners to buttons
 defined in `ui.R`.
 
+#### Error Messages
+
+Error messages are implemented using the validation features of
+Tabulator. Dynamic error labels are added above the table that are
+scrolled to automatically. The number of error messages at a time does
+not exceed the number of columns. Clicking on error messages will
+autoscroll to the culprit cell. All error autoscrolling only occurs if
+the target is outside the current viewport.
+
 #### Shiny Server Communication
 
 Since Shiny does not like GET/POST requests, the json patient data is
-converted to a csv string first and is 'sent' by setting the inputs
-`patientDataCSV_Ovt` and `patientDataCSV_Unt` when the 'Predict'
-button is clicked.
+converted to a csv string first and is 'sent' by setting an input when
+the 'Predict' button is clicked.
 
 The Shiny server uses the model and returns a dataframe with the
-predictions, which is rendered by the Shiny client on the browser page
-as a HTML table. Shiny's client library raises "shiny:value" events
-when outputs (in this case a HTML table) are changed or assigned a
-value. These event listeners are implemented in `ui.js`, and the HTML
-tables are fed to Tabulator to render them appropriately in the DOM.
+predictions. The dataframe is sent to the browser by setting an
+output, which is detected using event listeners.
+
+<!-- , which is rendered by the Shiny client on the browser
+page --> <!-- as a HTML table. Shiny's client library raises
+"shiny:value" events --> <!-- when outputs (in this case a HTML table)
+are changed or assigned a --> <!-- value. These event listeners are
+implemented in `ui.js`, and the HTML --> <!-- tables are fed to
+Tabulator to render them appropriately in the DOM. -->
 
 The 'Download Predictions' button uses this new Tabulator instance
-to make the predictions downloadable in a csv file.
-
-#### CSV Upload
-
-The UI allows the user to upload a csv file with existing patient data
-with the predefined column layout.
-
-Shiny for some reason kills `<input type=file>` tags, that are not
-created using fileInput Shiny modules. As a workaround, Shiny events
-need to be unbound and then rebound for the app to work after the file
-has been added to the DOM. This is done using adding "click" and
-"change" event handlers to the input element. 
-
-Due to this workaround of Shiny modules, the shiny server sometimes
-resets the output table, which requires the prediction table to be
-passed to tabulator again. As a side effect of this, an exception of
-the form `divv.children[0]: no attribute id of undefined` may occur
-when no predictions have been previously rendered.
+to make the predictions downloadable in csv/pdf/xlsx formats.
 
 ### server.R
 
