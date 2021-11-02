@@ -54,19 +54,8 @@ var tabledataOvt = [
      "D-dimer (ng/mL)":""}
 ];
 // Initialise Editable table
-var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
-    validationMode:"highlight",
-    data:tabledataOvt,
-    reactiveData:true,
-    autoColumns:false,
-    history:true,
-    layout:"fitDataTable",
-    layoutColumnsOnNewData:true,
-    tooltips:true,
-    //responsiveLayout:"collapse",
-    resizableRows:true,
-    resizableColumns:true,
-    validationFailed:function(cell, value, validators){
+
+function cellValidator(cell, value, validators){
 	errorMessage = undefined;
 	fieldname = cell._cell.column.field;
 	fieldnameid = fieldname.substr(0,5)+"_error";
@@ -92,7 +81,21 @@ var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
 	    $("#"+fieldnameid).click(errorCallbackFunction);
 	}
 	return true;
-    },
+}
+
+var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
+    validationMode:"highlight",
+    data:tabledataOvt,
+    reactiveData:true,
+    autoColumns:false,
+    history:true,
+    layout:"fitData",
+    layoutColumnsOnNewData:true,
+    tooltips:true,
+    //responsiveLayout:"collapse",
+    resizableRows:true,
+    resizableColumns:true,
+    validationFailed:cellValidator,
     columns:[
 	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric", validator:["min:0", "max:120"], editorParams:{elementAttributes:{placeholder:"[0,120]"}}},
 	{title:"Platelets<br/>(x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric", validator:["min:1000", "max:1420000"], editorParams:{elementAttributes:{placeholder:"[1000,1420000]"}}},
@@ -131,6 +134,9 @@ var get_predictions_Ovt = () => {
 	Shiny.setInputValue("patientDataCSV_Ovt", json2csv.parse(patientDataTable_Ovt.getData(), {delimiter:"|"}));
     else
     {
+	for(errorCell of errorCells){
+	    cellValidator(errorCell, errorCell.getValue(), errorCell._cell.column.modules.validate);
+	}
 	$.scrollTo(errorCells[0].getElement(), 100, {offset:{top:-100, left:-100}});
     }
 };
@@ -176,7 +182,7 @@ function renderOvtPredictions2(predictions){
     tableOvt_Output = new Tabulator("#tableOvt-output", {
 	reactiveData:true,
 	autoColumns:false,
-	layout:"fitDataTable",
+	layout:"fitData",
 	layoutColumnsOnNewData:true,
 	tooltips:true,
 	//responsiveLayout:"collapse",
@@ -203,6 +209,7 @@ function renderOvtPredictions2(predictions){
     if(!$("#download-button").isOnScreen())
     $.scrollTo("#download-button", 300, {axis:"y"});
 }
+
 function renderOvtPredictions(predictions){
     divv = document.getElementById("tableOvt");
     divv.children[0].id="tableOvt-output";

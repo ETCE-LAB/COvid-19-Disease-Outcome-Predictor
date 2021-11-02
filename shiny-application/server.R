@@ -83,6 +83,7 @@ shinyServer(function(input, output, session) {
 
        req(input$patientDataCSV_Ovt)
 
+
        threshold<- NULL
        if (input$triageRadio == 1){
            threshold<-thresholdOvt
@@ -173,54 +174,7 @@ shinyServer(function(input, output, session) {
 # --- END SERVER
 
 # ****
-# Function to read CSV and calculate risks
-# Returns dataframe with patient data and risks
-# ****
-
-
-readCSVAndAddRisks <- function(filePath, activateImputation, threshold) {
-  tryCatch(
-    {
-      df <- read.csv(filePath,
-                     header = TRUE,
-                     check.names=FALSE)
-      props = NULL
-      predictions = NULL
-      binPredictions = NULL
-      for (i in 1:nrow(df)) {
-        row = unlist(df[i, ])
-        newPrediction = predict(row, activateImputation)
-        if ( is.na(newPrediction)){
-          stop("Empty cells are detected. Please click the “Activate Imputation” box")
-        } 
-        props = c(props,  newPrediction)
-        predictions = c(predictions,  if(newPrediction < threshold)  "High Probability of Survival" else "High Probability of Death")
-        binPredictions = c(binPredictions,  if(newPrediction < threshold)  "0" else "1")
-      }
-      # Add score as the first row
-      #df["Prediction Value"] = props
-      df["Prediction"] = predictions
-      df["Binary Prediction"] = binPredictions
-      
-      df <- df[,c(which(colnames(df)=="Binary Prediction"),
-                  which(colnames(df)!="Binary Prediction"))]
-      #df <- df[,c(which(colnames(df)=="Prediction Value"),
-      #            which(colnames(df)!="Prediction Value"))]
-      df <- df[,c(which(colnames(df)=="Prediction"),
-                  which(colnames(df)!="Prediction"))]
-      return(df)
-    }
-    ,
-    error = function(e) {
-      # return a safeError if a parsing error occurs
-      stop(safeError(e))
-    }
-  )
-  return(NA)
-}
-
-# ****
-# Function to read JSON and calculate risks
+# Function to read raw CSV and calculate risks
 # Returns dataframe with patient data and risks
 # Replica of the previous function to support editable tables
 # ****
