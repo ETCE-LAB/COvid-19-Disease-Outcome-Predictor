@@ -194,8 +194,9 @@ readRawCSVAndAddRisks <- function(rawCSV, activateImputation, threshold) {
       for (i in 1:nrow(df)) {
         row = unlist(df[i, ])
         newPrediction = predict(row, activateImputation)
-        if ( is.na(newPrediction)){
-          stop("Empty cells are detected. Please click the “Activate Imputation” box")
+        if (is.na(newPrediction)){
+         showNotification("Empty cells are detected. Please click the “Activate Imputation” box", type="error")
+         stop()
         } 
         props = c(props,  newPrediction)
         predictions = c(predictions,  if(newPrediction < threshold)  "High Probability of Survival" else "High Probability of Death")
@@ -203,6 +204,7 @@ readRawCSVAndAddRisks <- function(rawCSV, activateImputation, threshold) {
       }
       # Add score as the first row
       #df["Prediction Value"] = props
+      
       df["Prediction"] = predictions
       df["Binary Prediction"] = binPredictions
       

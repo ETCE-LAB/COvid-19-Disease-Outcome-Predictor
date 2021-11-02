@@ -16,12 +16,25 @@
     background:red;
 }
 
+/* Firefox */
 .tabulator{
     scrollbar-color: red white;
     scrollbar-width:10pt;
 }
 
+/* WebKit and Chromiums */
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 0px;
+}
+
 ::placeholder {
-    color:#111;
+    color:#666;
     font-weight:bold;
 }
