@@ -160,7 +160,7 @@ function renderOvtPredictions2(predictions){
 	prediction_data.push({
 	    "Prediction":predictions["Prediction"][i],
 	    "Binary Prediction":predictions["Binary Prediction"][i],
-	    "Age":predictions["C-Reactive Protein (mg/L)"][i],
+	    "Age":predictions["Age"][i],
 	    "Platelets (x10^6/L)":predictions["Platelets (x10^6/L)"][i],
 	    "Eosinophils (x10^6/L)":predictions["Eosinophils (x10^6/L)"][i],
 	    "Neutrophils  (x10^6/L)":predictions["Neutrophils  (x10^6/L)"][i],
