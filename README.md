@@ -14,6 +14,7 @@
   - [server.R](#serverr)
   - [model.R](#modelr)
 - [Debugging](#debugging)
+  - [Testing Predictions](#testing-predictions)
   
 ## Server Setup 
 
@@ -180,6 +181,9 @@ cdns:
    Table extension for jspdf
 7. [sheetjs](https://github.com/SheetJS/sheetjs): xlsx generation
    compatibility extension for Tabulator
+
+### www/test.js
+	See [Testing Predictions](#testing-predictions) below.
 	
 #### Table Editing
 
@@ -193,10 +197,9 @@ defined in `ui.R`.
 
 Error messages are implemented using the validation features of
 Tabulator. Dynamic error labels are added above the table that are
-scrolled to automatically. The number of error messages at a time does
-not exceed the number of columns. Clicking on error messages will
-autoscroll to the culprit cell. All error autoscrolling only occurs if
-the target is outside the current viewport.
+scrolled to automatically. Clicking on error messages will autoscroll
+to the culprit cell. All error autoscrolling only occurs if the target
+is outside the current viewport.
 
 #### Shiny Server Communication
 
@@ -235,3 +238,25 @@ arbitrary data to the browser session (see [Shiny
 Documentation](https://shiny.rstudio.com/articles/communicating-with-js.html)),
 sending a message with the `debug` identifier will print the message
 to the browser console.
+
+### Testing Predictions
+
+The application must be tested manually for prediction correctness
+using the browser console.
+
+Procedure
+
+1. In the browser console, run `load_test_data()`. This will load some test
+   data into the table. 
+2. Choose between CODOP-Ovt and CODOP-Unt.
+3. Click on PREDICT
+4. After the predictions are loaded, run `test_predictions_ovt()` or
+   `test_predictions_unt()` depending on your previous selection. This
+   will return two lists. The first lists the incorrect predictions,
+   and the second lists the index of these predictions in the original data.
+   
+5. For additional debugging, you can run
+   `load_specific_test_data(test_predictions_ovt()[1])` or
+   `load_specific_test_data(test_predictions_unt()[1])` to modify the
+   specific patient values that yield incorrect predictions.
+
