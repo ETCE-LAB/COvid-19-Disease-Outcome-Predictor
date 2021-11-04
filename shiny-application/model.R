@@ -47,6 +47,42 @@ imputationValues <- c(
   "D-dimer (ng/mL)" = 2122.15796236425
   )
 
+ ## "edad"
+ ## "plaq"
+ ## "eosin"
+ ## "neutin"
+ ## "monin"
+ ## "pcrin"
+ ## "creain"
+ ## "ldh"
+ ## "soser"
+ ## "poser"
+ ## "glubas"
+ ## "dimerd"
+
+## SpO2, Hb, Plaquetas, linfocitos, neutrófilos, LDH,
+## GOT, GPT, Sodio, Potasio, Glucosa, tiempo de protrombina,
+## fibrinógeno y dímero D, creatinine
+
+
+
+imputationCategory1 <- list("Platelets (x10^6/L)",
+                            "Sodium (Natremia; mmol/L)",
+                            "Neutrophils  (x10^6/L)",
+                            "Lactate Dehydrogenase (U/L)",
+                            "Sodium (Natremia; mmol/L)",
+                            "Potassium (Kalemia; mmol/L)",
+                            "Glucose (mg/dL)",
+                            "D-dimer (ng/mL)",
+                            "Creatinine (mg/dL)")
+
+## Eosinofiles, monocytes, prcin and bilirubin
+
+imputationCategory2 <- list("Eosinophils (x10^6/L)",
+                            "Monocytes  (x10^6/L)",
+                            "C-Reactive Protein (mg/L)")
+
+
 # ****
 # Function for linear prediction model 
 # ****
@@ -57,16 +93,23 @@ predict <- function(subject, activateImputation = FALSE) {
   
   # Multiplicate subject data with coefficients
   n <- length(names(coefficients))
+  print("---------------------------------\n")
   for( i in 1:n) {
     name <- names(coefficients)[i]
     # Cast subject value to numeric
     subjectValue <- convertToNumeric(subject[name])
     # Numeric values: just compute
-    if ( ## (! subjectValue == 0) &&
+    if ( (! (subjectValue == 0 && name %in% imputationCategory1)) && 
          (! is.na(subjectValue)) && is.numeric(subjectValue) ) {
       propability <- propability + coefficients[name] * subjectValue
     # Non-Numeric value with imputation 
     } else if (activateImputation) {
+        print(paste("Imputing",
+                    name,
+                    ":",
+                    toString(subjectValue),
+                    "->",
+                    toString(imputationValues[name])))
       propability <- propability + coefficients[name] * imputationValues[name]
     # Non-Numeric value but imputation is deactivated
     } else {
