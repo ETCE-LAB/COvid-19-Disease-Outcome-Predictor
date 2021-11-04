@@ -184,7 +184,7 @@ cdns:
    compatibility extension for Tabulator
 
 ### www/test.js
-	See [Testing Predictions](#testing-predictions) below.
+See [Testing Predictions](#testing-predictions) below.
 	
 #### Table Editing
 
