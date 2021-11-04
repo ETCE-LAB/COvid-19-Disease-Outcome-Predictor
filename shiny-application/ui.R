@@ -5,7 +5,7 @@ library(shiny)
 ui <- function(req) {
   fluidPage(
   tags$link(rel="stylesheet", type="text/css", href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css"),
-  tags$link(rel="stylesheet", type="text/css", href="ui.css"),
+  tags$link(rel="stylesheet", type="text/css", href="https://cdn.jsdelivr.net/gh/TUC-Circular-Economy-Department/COvid-19-Disease-Outcome-Predictor/shiny-application/www/ui.css"),
   tags$script(src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js"),
   tags$script(src="https://cdn.jsdelivr.net/npm/json2csv@4.2.1"),
   shinyjs::useShinyjs(),
