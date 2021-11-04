@@ -120,6 +120,7 @@ ui <- function(req) {
     ),
 
   tags$script(src="ui.js"),
+  tags$script(src="test.js"),
   tags$script(src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.3/jquery.scrollTo.min.js"),
   tags$script(src="https://cdn.jsdelivr.net/npm/jquery-csv@1.0.21/src/jquery.csv.min.js"),
   tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"),

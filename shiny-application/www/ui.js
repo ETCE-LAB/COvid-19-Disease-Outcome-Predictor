@@ -56,9 +56,20 @@ var tabledataOvt = [
 // Initialise Editable table
 
 function cellValidator(cell, value, validators){
+
+    cell_validators = cell._cell.column.modules.validate;
+
+    mandatory_flag = false;
+
+    for(validator of cell_validators){
+	console.log(validator);
+	if(mandatory_flag || validator.func(cell, value, validator.params)){
+	    continue;
+	}
+
 	errorMessage = undefined;
 	fieldname = cell._cell.column.field;
-	fieldnameid = fieldname.substr(0,5)+"_error";
+	fieldnameid = fieldname.substr(0,5)+"_"+validator.type+"_error";
 
 	errorCallbackFunction = (event) => {
 	    $(event.target).next().remove();
@@ -67,11 +78,15 @@ function cellValidator(cell, value, validators){
 		$.scrollTo(cell._cell.element, 100, {margin:true, axis:"xy", offset:{top:-100, left:-100}});
 	};
 
-	if (validators[0].type == "max"){
-	    errorMessage = fieldname+" should be at most "+validators[0].parameters;
+	if (validator.type == "max"){
+	    errorMessage = fieldname+" should be at most "+validator.params;
 	}
-	else if(validators[0].type == "min"){
-	    errorMessage = fieldname+" should be at least "+validators[0].parameters;
+	else if(validator.type == "min"){
+	    errorMessage = fieldname+" should be at least "+validator.params;
+	}
+	else if(validator.type == "required"){
+	    errorMessage = fieldname+" is a mandatory field";
+	    mandatory_flag = true;
 	}
 
 	if (!$("#"+fieldnameid).length){
@@ -80,7 +95,8 @@ function cellValidator(cell, value, validators){
 		$.scrollTo('#'+fieldnameid, 200, {margin:true, offset:-200});
 	    $("#"+fieldnameid).click(errorCallbackFunction);
 	}
-	return true;
+    }
+    return true;
 }
 
 var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
@@ -97,7 +113,7 @@ var patientDataTable_Ovt = new Tabulator("#patientData-table-Ovt", {
     resizableColumns:true,
     validationFailed:cellValidator,
     columns:[
-	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric", validator:["min:0", "max:120"], editorParams:{elementAttributes:{placeholder:"[0,120]"}}},
+	{title:"Age", field:"Age", sorter:"number", editor:true, mutator:"Numeric", validator:["required", "min:0", "max:120"], editorParams:{elementAttributes:{placeholder:"[0,120]"}}},
 	{title:"Platelets<br/>(x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric", validator:["min:1000", "max:1420000"], editorParams:{elementAttributes:{placeholder:"[1000,1420000]"}}},
 	{title:"Eosinophils<br/>(x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric", validator:["min:0", "max:4850"], editorParams:{elementAttributes:{placeholder:"[0,4850]"}}},
 	{title:"Neutrophils<br/> (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:true, mutator:"Numeric", validator:["min:0", "max:150000"], editorParams:{elementAttributes:{placeholder:"[0,150000]"}}},
