@@ -11,7 +11,7 @@
 	- [Table Editing](#table-editing)
 	- [Error Messages](#error-messages)
 	- [Shiny Server Communication](#shiny-server-communication)
-  - [www/test.js](#testjs)
+  - [www/test.js](#wwwtestjs)
   - [server.R](#serverr)
   - [model.R](#modelr)
 - [Debugging](#debugging)
