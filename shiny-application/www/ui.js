@@ -147,7 +147,10 @@ document.getElementById("del-row-Ovt").addEventListener("click", function(){
 var get_predictions_Ovt = () => {
     errorCells = patientDataTable_Ovt.validate();
     if(errorCells === true)
-	Shiny.setInputValue("patientDataCSV_Ovt", json2csv.parse(patientDataTable_Ovt.getData(), {delimiter:"|"}));
+    {
+	$("#errorPane").empty();
+ 	Shiny.setInputValue("patientDataCSV_Ovt", json2csv.parse(patientDataTable_Ovt.getData(), {delimiter:"|"}));
+    }
     else
     {
 	for(errorCell of errorCells){
@@ -266,25 +269,79 @@ function downloadPredictions(choice){
     }
     else if(choice=="pdf"){
 	jsPDF = jspdf.jsPDF;
+
+	// Change columns for better pdf output
+
+	tableOvt_Output.setColumns([
+	    {title:"Prediction", field:"Prediction"},
+	    {title:"Binary Prediction", field: "Binary Prediction"},
+	    {title:"Age", field:"Age", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:120"]},
+	    {title:"Platelets (x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:1000", "max:1420000"]},
+	    {title:"Eosinophils (x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:4850"]},
+	    {title:"Neutrophils  (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:150000"]},
+	    {title:"Monocytes  (x10^6/L)", field:"Monocytes  (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:9999"]},
+	    {title:"C-Reactive Protein (mg/L)", field:"C-Reactive Protein (mg/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:1000"]},
+	    {title:"Creatinine (mg/dL)", field:"Creatinine (mg/dL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:19.74"]},
+	    {title:"Lactate Dehydrogenase (U/L)", field:"Lactate Dehydrogenase (U/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:16018"]},
+	    {title:"Sodium (Natremia mmol/L)", field:"Sodium (Natremia; mmol/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:105", "max:190"]},
+	    {title:"Potassium (Kalemia mmol/L)", field:"Potassium (Kalemia; mmol/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:1.8", "max:9.8"]},
+	    {title:"Glucose (mg/dL)", field:"Glucose (mg/dL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:15", "max:1100"]},
+	    {title:"D-dimer (ng/mL)", field:"D-dimer (ng/mL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:575000"]}
+    ]);
+
+
 	tableOvt_Output.download("pdf", "Predictions.pdf", {
 	    orientation:"landscape", //set page orientation to portrait
 	    title:"Predictions", //add title to report
     // jsPDF:{
     //     unit:"in", //set units to inches
     // },
-    // autoTable:{ //advanced table styling
-    //     styles: {
-    //         fillColor: [100, 255, 255]
-    //     },
-    //     columnStyles: {
-    //         id: {fillColor: 255}
-    //     },
-    //     margin: {top: 60},
-    // },
+    autoTable:{ //advanced table styling
+        styles: {
+            // fillColor: [100, 255, 255]
+	    fontSize:10
+        },
+	// tableWidth:1500,
+        // columnStyles: {
+        //     id: {fillColor: 255}
+        // },
+	// columns:[{header:"Prediction", dataKey:"Prediction"},
+	// 	 {header:"Binary Prediction", dataKey:"Binary Prediction"},
+	// 	 {header:"Age", dataKey:"Age"},
+	// 	 {header:"Platelets (x10^6/L)", dataKey:"Platelets (x10^6/L)"},
+	// 	 {header:"Eosinophils (x10^6/L)", dataKey:"Eosinophils (x10^6/L)"},
+	// 	 {header:"Neutrophils  (x10^6/L)", dataKey:"Neutrophils  (x10^6/L)"},
+	// 	 {header:"Monocytes  (x10^6/L)", dataKey:"Monocytes  (x10^6/L)"},
+	// 	 {header:"C-Reactive Protein (mg/L)", dataKey:"C-Reactive Protein (mg/L)"},
+	// 	 {header:"Creatinine (mg/dL)", dataKey:"Creatinine (mg/dL)"},
+	// 	 {header:"Lactate Dehydrogenase (U/L)", dataKey:"Lactate Dehydrogenase (U/L)"},
+	// 	 {header:"Sodium (Natremia; mmol/L)", dataKey:"Sodium (Natremia; mmol/L)"},
+	// 	 {header:"Potassium (Kalemia; mmol/L)", dataKey:"Potassium (Kalemia; mmol/L)"},
+	// 	 {header:"Glucose (mg/dL)", dataKey:"Glucose (mg/dL)"},
+	// 	 {header:"D-dimer (ng/mL)", dataKey:"D-dimer (ng/mL)"}],
+        margin: {top: 60, left:10, right:10},
+    },
     // documentProcessing:function(doc){
     //     //carry out an action on the doc object
     // }
 });
+	// Change back column layout
+	tableOvt_Output.setColumns([
+	    {title:"Prediction", field:"Prediction"},
+	    {title:"Binary<br/>Prediction", field: "Binary Prediction"},
+	    {title:"Age", field:"Age", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:120"]},
+	    {title:"Platelets<br/>(x10^6/L)", field:"Platelets (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:1000", "max:1420000"]},
+	    {title:"Eosinophils<br/>(x10^6/L)", field:"Eosinophils (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:4850"]},
+	    {title:"Neutrophils<br/> (x10^6/L)", field:"Neutrophils  (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:150000"]},
+	    {title:"Monocytes<br/> (x10^6/L)", field:"Monocytes  (x10^6/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:9999"]},
+	    {title:"C-Reactive Protein<br/>(mg/L)", field:"C-Reactive Protein (mg/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:1000"]},
+	    {title:"Creatinine<br/>(mg/dL)", field:"Creatinine (mg/dL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:19.74"]},
+	    {title:"Lactate Dehydrogenase<br/>(U/L)", field:"Lactate Dehydrogenase (U/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:16018"]},
+	    {title:"Sodium<br/>(Natremia; mmol/L)", field:"Sodium (Natremia; mmol/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:105", "max:190"]},
+	    {title:"Potassium<br/>(Kalemia; mmol/L)", field:"Potassium (Kalemia; mmol/L)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:1.8", "max:9.8"]},
+	    {title:"Glucose<br/>(mg/dL)", field:"Glucose (mg/dL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:15", "max:1100"]},
+	    {title:"D-dimer<br/>(ng/mL)", field:"D-dimer (ng/mL)", sorter:"number", editor:false, mutator:"Numeric", validator:["min:0", "max:575000"]}
+    ]);
     }
 }
 
