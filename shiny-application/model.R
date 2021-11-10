@@ -64,22 +64,22 @@ imputationValues <- c(
 ## GOT, GPT, Sodio, Potasio, Glucosa, tiempo de protrombina,
 ## fibrinógeno y dímero D, creatinine
 
+## Imputation Strategy v2 (Not used right now)
 
-
-imputationCategory1 <- list("Platelets (x10^6/L)",
-                            "Neutrophils  (x10^6/L)",
-                            "Lactate Dehydrogenase (U/L)",
-                            "Sodium (Natremia; mmol/L)",
-                            "Potassium (Kalemia; mmol/L)",
-                            "Glucose (mg/dL)",
-                            "D-dimer (ng/mL)",
-                            "Creatinine (mg/dL)")
+## imputationCategory1 <- list("Platelets (x10^6/L)",
+##                             "Neutrophils  (x10^6/L)",
+##                             "Lactate Dehydrogenase (U/L)",
+##                             "Sodium (Natremia; mmol/L)",
+##                             "Potassium (Kalemia; mmol/L)",
+##                             "Glucose (mg/dL)",
+##                             "D-dimer (ng/mL)",
+##                             "Creatinine (mg/dL)")
 
 ## Eosinofiles, monocytes, prcin and bilirubin
 
-imputationCategory2 <- list("Eosinophils (x10^6/L)",
-                            "Monocytes  (x10^6/L)",
-                            "C-Reactive Protein (mg/L)")
+## imputationCategory2 <- list("Eosinophils (x10^6/L)",
+##                             "Monocytes  (x10^6/L)",
+##                             "C-Reactive Protein (mg/L)")
 
 
                                         # ****
@@ -98,7 +98,7 @@ predict <- function(subject, activateImputation = FALSE) {
                                         # Cast subject value to numeric
         subjectValue <- convertToNumeric(subject[name])
                                         # Numeric values: just compute
-        if ( (! (subjectValue == 0 && name %in% imputationCategory1)) && 
+        if ( ## (! (subjectValue == 0 && name %in% imputationCategory1)) &&
              (! is.na(subjectValue)) && is.numeric(subjectValue) ) {
             propability <- propability + coefficients[name] * subjectValue
                                         # Non-Numeric value with imputation 
