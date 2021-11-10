@@ -189,19 +189,25 @@ See [Testing Predictions](#testing-predictions) below.
 	
 #### Table Editing
 
-Tabulator Mutators are written to make sure all values are
-numeric. The DOM elements defined in `ui.R` are initialised with the
-default columns for patient data. Tabulator's Undo/Redo and Add/Delete
-functionality is also implemented by adding event listeners to buttons
-defined in `ui.R`.
+Tabulator's default editing features are used for editing cells, and
+adding/deleting rows. Tabulator Mutators are written to make sure all
+values are numeric.
 
 #### Error Messages
 
 Error messages are implemented using the validation features of
-Tabulator. Dynamic error labels are added above the table that are
-scrolled to automatically. Clicking on error messages will autoscroll
-to the culprit cell. All error autoscrolling only occurs if the target
-is outside the current viewport.
+Tabulator. Since Tabulator does not implement error messages, but does
+support callbacks on cell edit events, a mixture of automatic and
+manual validation is used. See [Tabulator 4.9 Documentation](http://www.tabulator.info/docs/4.9/validate#manual). 
+
+Dynamic error labels are added above the table that are scrolled to
+automatically. Clicking on error messages will autoscroll to the
+culprit cell. All error autoscrolling only occurs if the target is
+outside the current viewport.
+
+When the **PREDICT** button Error messages are either redisplayed or
+removed if the table is invalid or valid repsectively.
+
 
 #### Shiny Server Communication
 
@@ -231,6 +237,25 @@ The `server.R` file implements the shiny-server functionality.
 
 The `model.R` file implements the COvid-19 Disease outcome prediction
 model.
+
+Imputation of parameters occurs *only* when they are empty (NA or non
+numeric), according to the following value table.
+
+
+| **Parameter**               | **Imputation Value** |
+|-----------------------------|----------------------|
+| Age                         | 66.679109811566      |
+| Platelets (x10^6/L)         | 250097.699563434     |
+| Eosinophils (x10^6/L)       | 63.8181665997054     |
+| Neutrophils  (x10^6/L)      | 5525.89391927775     |
+| Monocytes  (x10^6/L)        | 535.880366972477     |
+| C-Reactive Protein (mg/L)   | 74.4896361594228     |
+| Creatinine (mg/dL)          | 1.15657419376222     |
+| Lactate Dehydrogenase (U/L) | 363.908290097421     |
+| Sodium (Natremia; mmol/L)   | 138.426808936312     |
+| Potassium (Kalemia; mmol/L) | 4.17844129554656     |
+| Glucose (mg/dL)             | 124.285195339273     |
+| D-dimer (ng/mL)             | 2122.15796236425     |
 
 ## Debugging
 
